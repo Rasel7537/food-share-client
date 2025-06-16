@@ -96,3 +96,5 @@ const ManageFoods = () => {
 };
 
 export default ManageFoods;
+
+

@@ -92,12 +92,12 @@ const Navbar = () => {
             src={`${user ? user.photoURL : userIcon}`}
           />
           {user ? (
-            <button onClick={handleLogOut} className="btn btn-warning">
+            <button onClick={handleLogOut} className="btn btn-warning text-black">
               logout
             </button>
           ) : (
             <NavLink to={"/login"}>
-              <button className="btn btn-warning">Login</button>
+              <button className="btn btn-warning text-black">Login</button>
             </NavLink>
           )}
         </div>

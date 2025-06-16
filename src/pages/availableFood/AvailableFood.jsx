@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; // ✅ useState import করা হয়েছে
 import { useLoaderData } from "react-router";
 import { FaWeight, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import { Link } from "react-router";
 
 const AvailableFood = () => {
   const foods = useLoaderData();
-  const [searchTerm, setSearchTerm] = useState(""); //  Search input state
 
-  //  Filter foods based on search term
+  const [searchTerm, setSearchTerm] = useState(""); // ✅ Search input এর জন্য state
+  const [isThreeColumn, setIsThreeColumn] = useState(true); // ✅ Layout toggle এর জন্য state
+
+  // ✅ Search অনুযায়ী ফিল্টার
   const searchedFoods = foods.filter((food) =>
     food.foodName.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -25,7 +27,7 @@ const AvailableFood = () => {
             potential to make a difference in someone's life.
           </p>
 
-          {/* ✅ Search Input Field */}
+          {/* ✅ Search Input */}
           <div className="mt-5">
             <input
               type="text"
@@ -35,10 +37,25 @@ const AvailableFood = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+
+          {/* ✅ Layout Toggle Button */}
+          <div className="mt-4">
+            <button
+              onClick={() => setIsThreeColumn(!isThreeColumn)} //  Toggle layout
+              className="btn  btn-warning text-black"
+            >
+              {isThreeColumn ? "Switch to 2 Columns" : "Switch to 3 Columns"}{" "}
+              {/*  Button text toggle */}
+            </button>
+          </div>
         </div>
 
-        {/* Grid layout */}
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {/* ✅ Dynamic Grid Columns */}
+        <div
+          className={`grid gap-6 grid-cols-1 sm:grid-cols-2 ${
+            isThreeColumn ? "lg:grid-cols-3" : "lg:grid-cols-2"
+          }`}
+        >
           {searchedFoods.map((food) => (
             <div
               key={food._id}
@@ -71,7 +88,7 @@ const AvailableFood = () => {
                   {food.additionalNote || "No description provided."}
                 </p>
 
-                {/* Donator info */}
+                {/* Donator Info */}
                 <div className="flex items-center gap-3 mt-2">
                   <img
                     src={food.donatorImage}
@@ -81,6 +98,7 @@ const AvailableFood = () => {
                   <p className="text-sm font-semibold">{food.donatorName}</p>
                 </div>
 
+                {/* View Details Button */}
                 <div className="card-actions justify-center mt-4">
                   <Link to={`/foodDetails/${food._id}`}>
                     <button className="btn btn-success btn-sm text-white w-full">
@@ -98,3 +116,4 @@ const AvailableFood = () => {
 };
 
 export default AvailableFood;
+
