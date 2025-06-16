@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+.glass {
+  @apply backdrop-blur-lg bg-white/10 border border-white/20;
+}
