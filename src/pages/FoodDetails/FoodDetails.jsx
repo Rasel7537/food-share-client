@@ -1,13 +1,16 @@
 
-import React from "react";
+import React, { useContext } from "react";
 import { FaMapMarkerAlt, FaCalendarAlt, FaBox } from "react-icons/fa";
 import { Link, useLoaderData, useParams, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import { authContext } from "../../provider/AuthProvider"; // ✅ added
 
 const FoodDetails = () => {
   const { id } = useParams();
   const data = useLoaderData();
   const navigate = useNavigate();
+  const { user } = useContext(authContext); // ✅ added
+
   const singleFood = data.find((food) => food._id === id);
 
   if (!singleFood) {
@@ -41,16 +44,46 @@ const FoodDetails = () => {
       confirmButtonText: 'Yes, request it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        // Navigate to myFoodRequests page with id
-        navigate(`/myFoodRequests/${singleFood._id}`);
-        // Optional: success message
-        Swal.fire({
-          title: 'Requested!',
-          text: 'Your food request has been submitted.',
-          icon: 'success',
-          timer: 2000,
-          showConfirmButton: false
-        });
+        const requestData = {
+          foodId: singleFood._id,
+          foodName: singleFood.foodName,
+          foodImage: singleFood.foodImage,
+          donatorName: singleFood.donatorName,
+          donatorEmail: singleFood.donatorEmail,
+          donatorImage: singleFood.donatorImage,
+          pickupLocation: singleFood.pickupLocation,
+          expireDate: singleFood.expireDate,
+          requesterName: user?.displayName,
+          requesterEmail: user?.email,
+          requestDate: new Date().toISOString(),
+        };
+
+        fetch("http://localhost:3000/foodRequests", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(requestData)
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.insertedId || data.acknowledged) {
+              Swal.fire({
+                title: 'Requested!',
+                text: 'Your food request has been submitted.',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+              });
+              navigate(`/myFoodRequests/${user?.email}`);
+            } else {
+              Swal.fire("Oops!", "Something went wrong!", "error");
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            Swal.fire("Error", "Failed to send request.", "error");
+          });
       }
     });
   };
@@ -109,4 +142,3 @@ const FoodDetails = () => {
 };
 
 export default FoodDetails;
-

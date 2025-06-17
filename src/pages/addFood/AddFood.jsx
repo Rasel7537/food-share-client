@@ -2,40 +2,59 @@
 import React from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+const fetchFoods = () =>
+  fetch("http://localhost:3000/foods").then((res) => res.json());
 
 const AddFood = () => {
-  const navigate = useNavigate(); // Navigate hook
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  // useQuery: fetch all foods
+  const { data: foods = [], isLoading, error } = useQuery({
+    queryKey: ["foods"],
+    queryFn: fetchFoods,
+  });
+
+  // useMutation: add new food
+  const mutation = useMutation({
+    mutationFn: (newFood) =>
+      fetch("http://localhost:3000/foods", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(newFood),
+      }).then((res) => res.json()),
+    onSuccess: () => {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      queryClient.invalidateQueries({ queryKey: ["foods"] }); // refetch foods after adding
+      navigate("/");
+    },
+  });
 
   const handleAddFood = (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
     const newFood = Object.fromEntries(formData.entries());
-    console.log(newFood);
 
-    //send foodData to the DB
-    fetch("http://localhost:3000/foods", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newFood),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.insertedId) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Your work has been saved",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          form.reset();
-          navigate("/"); //  Redirect to home page
-        }
-      });
+    mutation.mutate(newFood);
+    form.reset();
   };
+
+  if (isLoading) return <div className="text-white p-4">Loading foods...</div>;
+  if (error)
+    return (
+      <div className="text-white p-4">
+        Error loading foods: {error.message || "Unknown error"}
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f2027] to-[#203a43] py-10 px-4">
@@ -47,7 +66,7 @@ const AddFood = () => {
 
         {/* Food Information */}
         <div>
-          <h3 className="text-xl font-semibold border-b mb-4 pb-1">
+          <h3 className="text-xl font-semibold border-b mb-4 pb-1 text-white">
             FOOD INFORMATION
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -131,7 +150,7 @@ const AddFood = () => {
 
         {/* Donator Information */}
         <div className="mt-8">
-          <h3 className="text-xl font-semibold border-b mb-4 pb-1">
+          <h3 className="text-xl font-semibold border-b mb-4 pb-1 text-white">
             DONATOR INFORMATION
           </h3>
 
@@ -174,11 +193,22 @@ const AddFood = () => {
         </div>
 
         {/* Submit Button */}
-        <button className="btn btn-primary w-full mt-4">ADD FOOD</button>
+        <button className="btn btn-primary w-full mt-4" type="submit">
+          ADD FOOD
+        </button>
       </form>
+
+      {/* Optional: Display fetched foods */}
+      <div className="mt-10 max-w-4xl mx-auto text-white">
+        <h3 className="text-xl font-semibold mb-4">Existing Foods</h3>
+        <ul>
+          {foods.map((food) => (
+            <li key={food._id}>{food.foodName}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
 
 export default AddFood;
-

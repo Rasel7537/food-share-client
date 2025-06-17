@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 import logo from "../../assets/logo.png";
 import { authContext } from "../../provider/AuthProvider";
@@ -65,7 +66,9 @@ const Navbar = () => {
               <NavLink to={"/availableFoods"}>Available Foods</NavLink>
               <NavLink to={"/addFood"}>Add Food</NavLink>
               <NavLink to={"/manageFoods"}>Manage My Foods</NavLink>
-              <NavLink to={"/myFoodRequests"}>My Food Request</NavLink>
+              <NavLink to={user ? `/myFoodRequests/${user.email}` : "/login"}>
+                My Food Requests
+              </NavLink>
             </ul>
           </div>
           <div className="flex gap-1 items-center">
@@ -81,7 +84,9 @@ const Navbar = () => {
             <NavLink to={"/availableFoods"}>Available Foods</NavLink>
             <NavLink to={"/addFood"}>Add Food</NavLink>
             <NavLink to={"/manageFoods"}>Manage My Foods</NavLink>
-            <NavLink to={"/myFoodRequests"}>My Food Request</NavLink>
+            <NavLink to={user ? `/myFoodRequests/${user.email}` : "/login"}>
+              My Food Requests
+            </NavLink>
           </ul>
         </div>
 
@@ -92,7 +97,10 @@ const Navbar = () => {
             src={`${user ? user.photoURL : userIcon}`}
           />
           {user ? (
-            <button onClick={handleLogOut} className="btn btn-warning text-black">
+            <button
+              onClick={handleLogOut}
+              className="btn btn-warning text-black"
+            >
               logout
             </button>
           ) : (
@@ -107,3 +115,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

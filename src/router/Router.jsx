@@ -1,4 +1,3 @@
-
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home";
@@ -18,7 +17,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
-    errorElement: <Errorpage></Errorpage> ,
+    errorElement: <Errorpage />,
     children: [
       {
         index: true,
@@ -71,9 +70,7 @@ const router = createBrowserRouter([
         Component: FoodDetails,
       },
       {
-        path: "myFoodRequests/:id",
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/foods/${params.id}`),
+        path: "myFoodRequests/:email",
         element: (
           <PrivateRoute>
             <MyFoodRequests />
@@ -85,4 +82,3 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
-
