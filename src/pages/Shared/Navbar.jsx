@@ -3,14 +3,13 @@ import React, { useContext } from "react";
 import logo from "../../assets/logo.png";
 import { authContext } from "../../provider/AuthProvider";
 import userIcon from "../../assets/userIcon.jpg";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink } from "react-router"; // ✅ fixed from "react-router"
 import Swal from "sweetalert2";
 
 const Navbar = () => {
   const { user, logOut } = useContext(authContext);
 
   const handleLogOut = () => {
-    console.log("logout ");
     Swal.fire({
       title: "Are you sure?",
       text: "Do you want to logout?",
@@ -36,10 +35,16 @@ const Navbar = () => {
     });
   };
 
+  // Common navlink class with active & hover styles
+  const navLinkClass = ({ isActive }) =>
+    isActive
+      ? "text-red-500 border-b-2 border-red-500 pb-1"
+      : "hover:text-red-400 hover:border-b-2 hover:border-red-300 pb-1";
+
   return (
     <div className="sticky top-0 z-50 bg-white/30 backdrop-blur-md shadow-md">
       <div className="navbar mx-auto">
-        {/* Navbar Start (Logo & Dropdown) */}
+        {/* Navbar Start */}
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
@@ -62,11 +67,14 @@ const Navbar = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white/90 rounded-box w-52 gap-3"
             >
-              <NavLink to={"/"}>Home</NavLink>
-              <NavLink to={"/availableFoods"}>Available Foods</NavLink>
-              <NavLink to={"/addFood"}>Add Food</NavLink>
-              <NavLink to={"/manageFoods"}>Manage My Foods</NavLink>
-              <NavLink to={user ? `/myFoodRequests/${user.email}` : "/login"}>
+              <NavLink to="/" className={navLinkClass}>Home</NavLink>
+              <NavLink to="/availableFoods" className={navLinkClass}>Available Foods</NavLink>
+              <NavLink to="/addFood" className={navLinkClass}>Add Food</NavLink>
+              <NavLink to="/manageFoods" className={navLinkClass}>Manage My Foods</NavLink>
+              <NavLink
+                to={user ? `/myFoodRequests/${user.email}` : "/login"}
+                className={navLinkClass}
+              >
                 My Food Requests
               </NavLink>
             </ul>
@@ -77,14 +85,17 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Navbar Center (Desktop Menu) */}
+        {/* Navbar Center (Desktop) */}
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal px-1 text-sm font-medium gap-6">
-            <NavLink to={"/"}>Home</NavLink>
-            <NavLink to={"/availableFoods"}>Available Foods</NavLink>
-            <NavLink to={"/addFood"}>Add Food</NavLink>
-            <NavLink to={"/manageFoods"}>Manage My Foods</NavLink>
-            <NavLink to={user ? `/myFoodRequests/${user.email}` : "/login"}>
+            <NavLink to="/" className={navLinkClass}>Home</NavLink>
+            <NavLink to="/availableFoods" className={navLinkClass}>Available Foods</NavLink>
+            <NavLink to="/addFood" className={navLinkClass}>Add Food</NavLink>
+            <NavLink to="/manageFoods" className={navLinkClass}>Manage My Foods</NavLink>
+            <NavLink
+              to={user ? `/myFoodRequests/${user.email}` : "/login"}
+              className={navLinkClass}
+            >
               My Food Requests
             </NavLink>
           </ul>
@@ -94,17 +105,15 @@ const Navbar = () => {
         <div className="navbar-end gap-3">
           <img
             className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white shadow-lg"
-            src={`${user ? user.photoURL : userIcon}`}
+            src={user?.photoURL || userIcon}
+            alt="User"
           />
           {user ? (
-            <button
-              onClick={handleLogOut}
-              className="btn btn-warning text-black"
-            >
-              logout
+            <button onClick={handleLogOut} className="btn btn-warning text-black">
+              Logout
             </button>
           ) : (
-            <NavLink to={"/login"}>
+            <NavLink to="/login">
               <button className="btn btn-warning text-black">Login</button>
             </NavLink>
           )}
@@ -115,4 +124,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
