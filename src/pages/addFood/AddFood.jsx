@@ -199,14 +199,14 @@ const AddFood = () => {
       </form>
 
       {/* Optional: Display fetched foods */}
-      <div className="mt-10 max-w-4xl mx-auto text-white">
+      {/* <div className="mt-10 max-w-4xl mx-auto text-white">
         <h3 className="text-xl font-semibold mb-4">Existing Foods</h3>
         <ul>
           {foods.map((food) => (
             <li key={food._id}>{food.foodName}</li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };
