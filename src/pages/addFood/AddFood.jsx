@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const fetchFoods = () =>
-  fetch("http://localhost:3000/foods").then((res) => res.json());
+  fetch("https://food-share-server-seven.vercel.app/foods").then((res) => res.json());
 
 const AddFood = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const AddFood = () => {
   // useMutation: add new food
   const mutation = useMutation({
     mutationFn: (newFood) =>
-      fetch("http://localhost:3000/foods", {
+      fetch("https://food-share-server-seven.vercel.app/foods", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(newFood),

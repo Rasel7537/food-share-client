@@ -11,7 +11,7 @@ const MyFoodRequests = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:3000/foodRequests?email=${user.email}`)
+    fetch(`https://food-share-server-seven.vercel.app/foodRequests?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => setRequests(data));
   }, [user]);

@@ -21,7 +21,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        loader: () => fetch("http://localhost:3000/foods"),
+        loader: () => fetch("https://food-share-server-seven.vercel.app/foods"),
         Component: Home,
       },
       {
@@ -46,12 +46,12 @@ const router = createBrowserRouter([
       },
       {
         path: "availableFoods",
-        loader: () => fetch("http://localhost:3000/foods"),
+        loader: () => fetch("https://food-share-server-seven.vercel.app/foods"),
         Component: AvailableFood,
       },
       {
         path: "manageFoods",
-        loader: () => fetch("http://localhost:3000/foods"),
+        loader: () => fetch("https://food-share-server-seven.vercel.app/foods"),
         element: (
           <PrivateRoute>
             <ManageFoods />
@@ -61,12 +61,13 @@ const router = createBrowserRouter([
       {
         path: "UpdateFood/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/foods/${params.id}`),
+          // fetch(`https://food-share-server-seven.vercel.app/${params.id}`),
+         fetch(`https://food-share-server-seven.vercel.app/foods/${params.id}`),
         Component: UpdateFood,
       },
       {
         path: "foodDetails/:id",
-        loader: () => fetch("http://localhost:3000/foods"),
+        loader: () => fetch("https://food-share-server-seven.vercel.app/foods"),
         Component: FoodDetails,
       },
       {

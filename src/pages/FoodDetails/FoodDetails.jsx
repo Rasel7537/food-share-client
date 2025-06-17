@@ -58,7 +58,7 @@ const FoodDetails = () => {
           requestDate: new Date().toISOString(),
         };
 
-        fetch("http://localhost:3000/foodRequests", {
+        fetch("https://food-share-server-seven.vercel.app/foodRequests", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

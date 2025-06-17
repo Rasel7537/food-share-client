@@ -39,6 +39,10 @@ const updateUser = (updatedData)=>{
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false)
+      // if(currentUser?.email){
+      //   const userdata = {email:currentUser.email}
+      //   axi
+      // }
     });
     return () => {
       unsubscribe();

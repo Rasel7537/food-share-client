@@ -1,9 +1,8 @@
-
 import React, { useContext } from "react";
 import logo from "../../assets/logo.png";
 import { authContext } from "../../provider/AuthProvider";
 import userIcon from "../../assets/userIcon.jpg";
-import { Link, NavLink } from "react-router"; // ✅ fixed from "react-router"
+import { Link, NavLink } from "react-router"; 
 import Swal from "sweetalert2";
 
 const Navbar = () => {
@@ -67,10 +66,18 @@ const Navbar = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white/90 rounded-box w-52 gap-3"
             >
-              <NavLink to="/" className={navLinkClass}>Home</NavLink>
-              <NavLink to="/availableFoods" className={navLinkClass}>Available Foods</NavLink>
-              <NavLink to="/addFood" className={navLinkClass}>Add Food</NavLink>
-              <NavLink to="/manageFoods" className={navLinkClass}>Manage My Foods</NavLink>
+              <NavLink to="/" className={navLinkClass}>
+                Home
+              </NavLink>
+              <NavLink to="/availableFoods" className={navLinkClass}>
+                Available Foods
+              </NavLink>
+              <NavLink to="/addFood" className={navLinkClass}>
+                Add Food
+              </NavLink>
+              <NavLink to="/manageFoods" className={navLinkClass}>
+                Manage My Foods
+              </NavLink>
               <NavLink
                 to={user ? `/myFoodRequests/${user.email}` : "/login"}
                 className={navLinkClass}
@@ -88,10 +95,18 @@ const Navbar = () => {
         {/* Navbar Center (Desktop) */}
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal px-1 text-sm font-medium gap-6">
-            <NavLink to="/" className={navLinkClass}>Home</NavLink>
-            <NavLink to="/availableFoods" className={navLinkClass}>Available Foods</NavLink>
-            <NavLink to="/addFood" className={navLinkClass}>Add Food</NavLink>
-            <NavLink to="/manageFoods" className={navLinkClass}>Manage My Foods</NavLink>
+            <NavLink to="/" className={navLinkClass}>
+              Home
+            </NavLink>
+            <NavLink to="/availableFoods" className={navLinkClass}>
+              Available Foods
+            </NavLink>
+            <NavLink to="/addFood" className={navLinkClass}>
+              Add Food
+            </NavLink>
+            <NavLink to="/manageFoods" className={navLinkClass}>
+              Manage My Foods
+            </NavLink>
             <NavLink
               to={user ? `/myFoodRequests/${user.email}` : "/login"}
               className={navLinkClass}
@@ -109,7 +124,10 @@ const Navbar = () => {
             alt="User"
           />
           {user ? (
-            <button onClick={handleLogOut} className="btn btn-warning text-black">
+            <button
+              onClick={handleLogOut}
+              className="btn btn-warning text-black"
+            >
               Logout
             </button>
           ) : (
